@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<style type="text/css">
+  .container {
+    margin: 20px;
+
+  }
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .col-3 {
+    width: 20%;
+  }
+
+  .card-img-top {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+
+  .btn {
+    color: aliceblue;
+    background-color: blue;
+    padding: 10px;
+  }
+</style>
+
+<div class="container">
+  <h3>AC咖啡 點餐機</h3>
+  <!-- 菜單區塊 -->
+  <div id="menu" class="row">
+    <!--  卡片開始放置處  -->
+
+  </div>
+  <!-- 購物車清單 -->
+  <h4 class="my-3">購物車清單</h4>
+  <div class="col-6">
+    <ul id="cart" class="list-group">
+
+    </ul>
+  </div>
+  <h5 class="my-3">總金額：<span id="total-amount">--</span></h5>
+  <button id="submit-button" type="button" class="btn btn-primary">送出訂單</button>
+</div>
+<script>
+  // ======= default data =======
+  const menu = document.querySelector("#menu");
+  const cart = document.querySelector("#cart");
+  const totalAmount = document.querySelector("#total-amount");
+  const button = document.querySelector("#submit-button");
+
+
+  // 菜單資料
+  const productData = [
+    {
+      id: "product-1",
+      imgUrl:
+        "https://images.unsplash.com/photo-1558024920-b41e1887dc32?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+      name: "馬卡龍",
+      price: 90
+    },
+    {
+      id: "product-2",
+      imgUrl:
+        "https://images.unsplash.com/photo-1560691023-ca1f295a5173?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+      name: "草莓",
+      price: 60
+    },
+    {
+      id: "product-3",
+      imgUrl:
+        "https://images.unsplash.com/photo-1568271675068-f76a83a1e2d6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+      name: "奶茶",
+      price: 100
+    },
+    {
+      id: "product-4",
+      imgUrl:
+        "https://images.unsplash.com/photo-1514517604298-cf80e0fb7f1e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+      name: "冰咖啡",
+      price: 180
+    }
+  ];
+  // ======= 請從這裡開始 =======
+  // const length = productData.length;
+  for (let i = 0; i < productData.length; i++) {
+    const data = productData[i];
+
+    let card = `
+    <div class="col-3"> 
+      <div class="card"> 
+        <img src="${data.imgUrl}" class="card-img-top" alt="..."> 
+        <div class="card-body"> 
+          <h5 class="card-title">${data.name}</h5>
+          <p class="card-text">${data.price}</p> 
+          <button href="#" class="btn btn-primary" onclick="addCart('${data.id}')">加入購物車</button> 
+        </div>
+      </div>
+    </div > 
+    `
+    menu.innerHTML += card;
+
+  }
+
+  //加入購物車
+  function addCart(id) {
+
+    const result = productData.filter(function (item, index, array) {
+      return item.id == id;
+    });
+    const name = result[0].name;
+    const price = result[0].price;
+
+    const now_price = totalAmount.innerHTML;
+
+    if (now_price == '--') {
+      totalprice = price;
+    } else {
+      // console.log(typeof (now_price));
+      totalprice = Number(now_price) + price;
+    }
+    // console.log(now_price);
+    // console.log(name, price);
+
+    const content = `
+      <li class="list-group-item">${name} X 1 小計：${price}</li>
+    `
+    cart.innerHTML += content;
+    totalAmount.innerHTML = totalprice;
+  }
+
+  //送出訂單
+  button.addEventListener('click', function () {
+
+    totalprice = totalAmount.innerHTML;
+    // console.log(totalprice);
+    const Message = `感謝購買\n總金額：${totalprice}`;
+
+    alert(Message);
+    totalAmount.innerHTML = '--';
+    cart.innerHTML = '';
+    totalprice = '';
+  })
+</script>
+
+</html>
